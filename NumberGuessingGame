@@ -1,0 +1,66 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class NumberGuessingGame {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int minNum = 1;
+        int maxNum = 100;
+        int targetNumber;
+        int attempts;
+        int maxAttempts = 10;
+        int roundsPlayed = 0;
+        int totalAttempts = 0;
+        boolean playAgain = true;
+
+        System.out.println("Welcome to the Number Guessing Game!");
+
+        while (playAgain) {
+            roundsPlayed++;
+            attempts = 0;
+            targetNumber = random.nextInt(maxNum - minNum + 1) + minNum;
+            System.out.println("\nRound " + roundsPlayed + ": Guess the number between " + minNum + " and " + maxNum);
+
+            while (attempts < maxAttempts) {
+                System.out.print("Enter your guess: ");
+                int userGuess;
+                try {
+                    userGuess = scanner.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                    scanner.next(); // Clear the invalid input from the scanner
+                    continue;
+                }
+
+                attempts++;
+
+                if (userGuess < targetNumber) {
+                    System.out.println("Too low! Try again.");
+                } else if (userGuess > targetNumber) {
+                    System.out.println("Too high! Try again.");
+                } else {
+                    System.out.println("Congratulations! You guessed the number " + targetNumber + " in " + attempts
+                            + " attempts.");
+                    totalAttempts += attempts;
+                    break;
+                }
+            }
+
+            if (attempts >= maxAttempts) {
+                System.out.println("Sorry, you've reached the maximum number of attempts. The correct number was "
+                        + targetNumber + ".");
+            }
+
+            System.out.print("Do you want to play again? (yes/no): ");
+            String playAgainInput = scanner.next().toLowerCase();
+            playAgain = playAgainInput.equals("yes");
+        }
+
+        double averageAttempts = (double) totalAttempts / roundsPlayed;
+        System.out.println("\nGame Over! You played " + roundsPlayed + " rounds.");
+        System.out.printf("Average attempts per round: %.2f", averageAttempts);
+
+        scanner.close();
+    }
+}
